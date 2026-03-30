@@ -1,0 +1,50 @@
+clc; clear; close all;
+
+%% Parámetros del diseño
+L_total = 6605;        % km enlace total
+L_SMF = 72;            % km por tramo (fibra estándar)
+L_DCF = 8;             % km por tramo (DCF)
+L_span = L_SMF + L_DCF;
+
+N = round(L_total / L_span);  % número de tramos (≈82)
+
+%% Costes
+cost_SMF_km = 1000;    % €/km (1 €/m)
+cost_DCF_km = 3000;    % €/km (3 €/m)
+cost_EDFA = 1500;      % € por amplificador
+cost_TX = 1000;        % € por transceptor
+
+%% Longitudes totales
+L_SMF_total = N * L_SMF;
+L_DCF_total = N * L_DCF;
+
+%% Coste unidireccional
+cost_SMF = L_SMF_total * cost_SMF_km;
+cost_DCF = L_DCF_total * cost_DCF_km;
+cost_amp = N * cost_EDFA;
+cost_txrx = 2 * cost_TX;
+
+cost_total_uni = cost_SMF + cost_DCF + cost_amp + cost_txrx;
+
+%% Coste bidireccional
+cost_DCF_bi = 2 * cost_DCF;
+cost_amp_bi = 2 * cost_amp;
+
+cost_total_bi = cost_SMF + cost_DCF_bi + cost_amp_bi + cost_txrx;
+
+%% Mostrar resultados
+fprintf('Número de tramos: %d\n', N);
+
+fprintf('\n--- UNIDIRECCIONAL ---\n');
+fprintf('Fibra SMF: %.0f €\n', cost_SMF);
+fprintf('Fibra DCF: %.0f €\n', cost_DCF);
+fprintf('Amplificadores: %.0f €\n', cost_amp);
+fprintf('Transceptores: %.0f €\n', cost_txrx);
+fprintf('TOTAL: %.0f €\n', cost_total_uni);
+
+fprintf('\n--- BIDIRECCIONAL ---\n');
+fprintf('Fibra SMF: %.0f €\n', cost_SMF);
+fprintf('Fibra DCF: %.0f €\n', cost_DCF_bi);
+fprintf('Amplificadores: %.0f €\n', cost_amp_bi);
+fprintf('Transceptores: %.0f €\n', cost_txrx);
+fprintf('TOTAL: %.0f €\n', cost_total_bi);
